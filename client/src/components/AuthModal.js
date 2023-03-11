@@ -1,11 +1,15 @@
-import {useState} from "react";
-
+import {useState} from "react"
+import axios from 'axios'
+import {useNavigate} from "react-router-dom"
+import {useCookies} from 'react-cookie'
 const AuthModal = ({setShowModal,isSignUp}) => {
 
     const [email, setEmail] = useState(null)
     const [password, setPassword] = useState(null)
     const [confirmPassword, setConfirmPassword] = useState(null)
     const [error, setError] = useState(null)
+    const [cookies, setCookie, removeCookie] = useCookies(['user'])
+    let navigate = useNavigate()
 
     console.log(email, password, confirmPassword)
 
@@ -13,14 +17,24 @@ const AuthModal = ({setShowModal,isSignUp}) => {
         setShowModal(false)
     }
 
-    const handleSubmit = (e) =>{
+    const handleSubmit = async (e) =>{
         e.preventDefault()
         try{
             if( isSignUp && (password !== confirmPassword)){
                 setError("Passwords need to match!")
+                return
             }
-            console.log('make a post request to our database')
+            console.log('posting',email, password)
+            const response = await axios.post(`http://localhost:8000/${isSignUp ? 'signup' : 'login'}`, { email, password })
 
+            setCookie('AuthToken', response.data.token)
+            setCookie('UserId', response.data.userId)
+            // 201响应码意味着成功请求并创建新的资源 https://zhuanlan.zhihu.com/p/462030879
+            const success = response.status === 201
+            if (success && isSignUp) navigate('/onboarding')
+            if (success && !isSignUp) navigate('/dashboard')
+
+            window.location.reload()
         }catch(error){
             console.log(error)
         }
@@ -40,7 +54,7 @@ const AuthModal = ({setShowModal,isSignUp}) => {
                     name="email"
                     placeholder="email"
                     required={true}
-                    onCharge={(e) => setEmail(e.target.value)}
+                    onChange={(e) => setEmail(e.target.value)}
                 />
 
                 <input
@@ -49,7 +63,7 @@ const AuthModal = ({setShowModal,isSignUp}) => {
                     name="password"
                     placeholder="password"
                     required={true}
-                    onCharge={(e) => setPassword(e.target.value)}
+                    onChange={(e) => setPassword(e.target.value)}
                 />
 
                 {isSignUp && <input
@@ -58,7 +72,7 @@ const AuthModal = ({setShowModal,isSignUp}) => {
                     name="password-check"
                     placeholder="confirm password"
                     required={true}
-                    onCharge={(e) => setConfirmPassword(e.target.value)}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
                 />}
 
 
