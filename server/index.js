@@ -67,7 +67,6 @@ app.post('/login',async (req, res) => {
 
         const user = await users.findOne({email})
 
-
         const correctPassword = await bcrypt.compare(password, user.hashed_password)
         if (user && correctPassword) {
             const token = jwt.sign(user, email, {
@@ -77,7 +76,7 @@ app.post('/login',async (req, res) => {
         }
         res.status(400).send('Invalid Credentials')
     } catch (err) {
-        console.log(err)
+        console.log("ERRoR" + err)
     }
 })
 
@@ -85,13 +84,15 @@ app.post('/login',async (req, res) => {
 
 app.get('/user', async (req, res) => {
     const client = new MongoClient(uri)
-    const userId = req.params.userId
+    const userId = req.query.userId
+    //get请求返回参数在query。
+    // console.log(req)
 
     try {
         await client.connect()
         const database = client.db('app-data')
         const users = database.collection('users')
-
+        console.log(users)
         const query = {user_id: userId}
         const user = await users.findOne(query)
         res.send(user)

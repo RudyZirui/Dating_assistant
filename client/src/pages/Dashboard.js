@@ -9,42 +9,45 @@ const Dashboard = () => {
     const [genderedUsers, setGenderedUsers] = useState(null)
     const [cookies, setCookie, removeCookie] = useCookies(['user'])
     const userId = cookies.UserId
+    // setUser({'url': "", "first_name": ""})
     const getUser = async () => {
         try{
+            console.log("startget")
             const response = await axios.get('http://localhost:8000/user', {
                 params:{userId}
             })
+            console.log(response)
             setUser(response.data)
         } catch(error){
             console.log(error)
         }
     }
 
-    const getGenderedUsers = async () =>{
-        try{
-            const response = await axios.get('http://localhost:8000/gendered-users',{
-                params:{gender: user?.gender_interest}
-            })
-            setGenderedUsers(response.data)
-        }catch(error){
-            console.log(error)
-        }
-    }
-    useEffect(()=>{
+    // const getGenderedUsers = async () =>{
+    //     try{
+    //         const response = await axios.get('http://localhost:8000/gendered-users',{
+    //             params:{gender: user?.gender_interest}
+    //         })
+    //         setGenderedUsers(response.data)
+    //     }catch(error){
+    //         console.log(error)
+    //     }
+    // }
+    useEffect(() => {
         getUser()
     },[])
 
-    useEffect(() =>{
-        if(user){
-            getGenderedUsers()
-        }
-    }, [user])
+    // useEffect(() =>{
+    //     if(user){
+    //         getGenderedUsers()
+    //     }
+    // }, [user])
 
 
 
     const characters = [
         {
-            name: 'Kim Jisoo',
+            name: 'Kim Jisoo2',
             url: 'https://m.economictimes.com/thumb/msid-96710895,width-1200,height-900,resizemode-4,imgsize-38032/blackpink-jisoo.jpg'
         },
         {
@@ -77,10 +80,12 @@ const Dashboard = () => {
     }
 
     return (
+
         // <>
         //     {user &&
                 <div className="dashboard">
                     {/*下行有问题*/}
+
                     <ChatContainer user={user}/>
                     <div className="swipe-container">
                         <div className="card-container">

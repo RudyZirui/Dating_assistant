@@ -8,6 +8,19 @@ const ChatHeader = ({user}) =>{
         window.location.reload()
     }
 
+    if(!user) {
+        return (
+            <div className="chat-container-header">
+                <div className="profile">
+                    <div className="img-container">
+                        <img src=""/>
+                    </div>
+                    <h3>loading...</h3>
+                </div>
+                <i className="log-out-icon" onClick={logout}>←</i>
+            </div>
+        )
+    }
     return(
         <div className="chat-container-header">
             <div className="profile">
