@@ -32,10 +32,13 @@ const Dashboard = () => {
     }
     useEffect(()=>{
         getUser()
-        getGenderedUsers()
-    },[user,genderedUsers])
+    },[])
 
-
+    useEffect(() =>{
+        if(user){
+            getGenderedUsers()
+        }
+    }, [user])
 
 
 
@@ -74,9 +77,10 @@ const Dashboard = () => {
     }
 
     return (
-        <>
-            {user &&
+        // <>
+        //     {user &&
                 <div className="dashboard">
+                    {/*下行有问题*/}
                     <ChatContainer user={user}/>
                     <div className="swipe-container">
                         <div className="card-container">
@@ -98,8 +102,9 @@ const Dashboard = () => {
                             </div>
                         </div>
                     </div>
-                </div>}
-        </>
+                </div>
+        //     }
+        // </>
     )
 }
 export default Dashboard
