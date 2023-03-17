@@ -7,7 +7,7 @@ const ChatHeader = ({user}) =>{
         removeCookie('AuthToken', cookies.AuthToken)
         window.location.reload()
     }
-
+//因为数据传输的比页面渲染（render）的慢，要先等数据到再渲染。user用来判断数据是否送达
     if(!user) {
         return (
             <div className="chat-container-header">

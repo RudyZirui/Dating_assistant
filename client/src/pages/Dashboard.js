@@ -9,7 +9,7 @@ const Dashboard = () => {
     const [genderedUsers, setGenderedUsers] = useState(null)
     const [cookies, setCookie, removeCookie] = useCookies(['user'])
     const userId = cookies.UserId
-    // setUser({'url': "", "first_name": ""})
+
     const getUser = async () => {
         try{
             console.log("startget")
